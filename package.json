@@ -1,0 +1,23 @@
+{
+  "name": "newtproject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "budo index.js -o -l -- -t brfs",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "brfs": "^1.4.3",
+    "csv-parse": "^1.2.0",
+    "csv-parser": "^1.11.0",
+    "google-maps": "^3.2.1",
+    "leaflet": "^1.0.3",
+    "leaflet-map": "^0.2.1"
+  },
+  "devDependencies": {
+    "budo": "^9.4.7"
+  }
+}
