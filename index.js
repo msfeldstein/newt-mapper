@@ -1,5 +1,6 @@
 var NewtReader = require('./newt-reader')
 var NewtBlob = require('./newt-blob')
+
 var L = require('leaflet')
 require('./styles')
 
@@ -42,7 +43,6 @@ data.forEach(function(newt) {
     blobs = blobs.filter((b) => {
       return mergableBlobs.indexOf(b) == -1
     }) 
-    
   } else {
     var blob = new NewtBlob(newt)
     blobs.push(blob)
@@ -53,12 +53,15 @@ data.forEach(function(newt) {
 const pos = [blobs[0].center.latitude, blobs[0].center.longitude]
 mymap.setView(pos, 13);
 
+var marker = L.icon({
+  iconUrl: "./frog-icon.png",
+  iconSize: [32,32]
+})
 blobs.forEach((blob) => {
   blob.newts.forEach((newt) => {
     if (isNaN(newt.latitude) || isNaN(newt.longitude)) return
-    L.circle([newt.latitude, newt.longitude], {
-      color: blob.color,
-      radius: 100
+    L.marker([newt.latitude, newt.longitude], {
+      icon: marker
     }).addTo(mymap)
     total++
   })
@@ -69,5 +72,29 @@ blobs.forEach((blob) => {
     radius: blob.radius * 1000
   }).addTo(mymap)
 })
+
+var blobCSV = "latitude,longitude,center"
+blobs.forEach((blob) => {
+  blobCSV += [
+    blob.center.latitude,
+    blob.center.longitude,
+    blob.radius
+  ].join(',') + "\n"
+})
+
+console.log(blobCSV)
+
+function download(filename, text) {
+  var element = document.createElement('a');
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+  element.setAttribute('download', filename);
+
+  element.style.display = 'none';
+  document.body.appendChild(element);
+
+  element.click();
+
+  document.body.removeChild(element);
+}
 
 console.log("Total Newts", total)

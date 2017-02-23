@@ -8,10 +8,16 @@ class NewtBlob {
   }
 
   containsNewt(newt) {
-    return Distance(
-      newt.latitude, newt.longitude,
-      this.center.latitude, this.center.longitude)
-      < BlobSpacing
+    for (var i = 0; i < this.newts.length; i++) {
+      var otherNewt = this.newts[i]
+      if (Distance(
+        newt.latitude, newt.longitude,
+        otherNewt.latitude, otherNewt.longitude
+      ) < BlobSpacing) {
+        return true
+      }
+    }
+    return false;
   }
   
   locationArray() {
